@@ -1,77 +1,94 @@
-/* Layout */
 .container {
-    max-width: 1100px;
-    margin: 24px auto;
-    padding: 0 16px;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  }
-  
-  /* Header */
-  .title {
-    margin: 0 0 12px;
-  }
-  
-  /* Search */
-  .search {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .input {
-    height: 36px;
-    padding: 0 10px;
-    border: 1px solid #d0d5dd;
-    border-radius: 8px;
-    outline: none;
-  }
-  .input:focus {
-    border-color: #667085;
-  }
-  .button {
-    height: 36px;
-    padding: 0 12px;
-    border: 1px solid #d0d5dd;
-    border-radius: 8px;
-    background: #f8fafc;
-    cursor: pointer;
-  }
-  .button:hover {
-    background: #f1f5f9;
-  }
-  .searchingFor {
-    font-size: 12px;
-    color: #475467;
-  }
-  
-  /* Table */
-  .tableWrap {
-    margin-top: 20px;
-    overflow-x: auto;
-  }
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
-  .table thead th {
-    background: #f8fafc;
-    text-align: left;
-    padding: 10px 12px;
-    border-bottom: 1px solid #e5e7eb;
-    white-space: nowrap;
-  }
-  .table tbody td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #eef2f7;
-    vertical-align: top;
-  }
-  .table tbody tr:nth-child(even) td {
-    background: #fbfdff;
-  }
-  
-  /* Specialties stacking */
-  .specialties div {
-    margin-bottom: 4px;
-  }
-  
+  max-width: 1300px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.title {
+  margin: 0 0 12px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 12px 0 16px;
+}
+
+.input {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #667085;
+}
+
+.button {
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #f1f5f9;
+}
+
+.searchingFor {
+  font-size: 12px;
+  color: #475467;
+}
+
+.status {
+  margin: 8px 0 16px;
+  font-size: 14px;
+}
+
+.empty {
+  padding: 12px;
+  border: 1px dashed #e5e7eb;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.tableWrap {
+  margin-top: 8px;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table thead th {
+  background: #f8fafc;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef2f7;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.table tbody tr:nth-child(even) td {
+  background: #fbfdff;
+}
+
+.specialtiesList li {
+  margin-bottom: 4px;
+  word-break: break-word;
+}
