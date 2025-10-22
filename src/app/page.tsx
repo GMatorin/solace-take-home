@@ -18,13 +18,20 @@ export default function Home() {
   const [limit] = useState(10);
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`/api/advocates?page=${page}&limit=${limit}`)
-      .then((response) => response.json())
-      .then((jsonResponse) => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/advocates?page=${page}&limit=${limit}`);
+        const jsonResponse = await response.json();
         setAdvocates(jsonResponse.data);
-      })
-      .finally(() => setLoading(false));
+      } catch (error) {
+        console.error("Error fetching advocates:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [page, limit]);
 
   const onChange = (e) => setSearchTerm(e.target.value);
@@ -96,13 +103,13 @@ export default function Home() {
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>City</th>
-                  <th>Degree</th>
-                  <th>Specialties</th>
-                  <th>Years of Experience</th>
-                  <th>Phone Number</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">City</th>
+                  <th scope="col">Degree</th>
+                  <th scope="col">Specialties</th>
+                  <th scope="col">Years of Experience</th>
+                  <th scope="col">Phone Number</th>
                 </tr>
               </thead>
               <tbody>
