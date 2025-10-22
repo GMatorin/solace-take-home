@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+import { Advocate } from "./types/advocate";
 
 export default function Home() {
-  const [advocates, setAdvocates] = useState([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+  const [advocates, setAdvocates] = useState<Advocate[]>([]);
+  const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     console.log("fetching advocates...");
@@ -18,18 +20,18 @@ export default function Home() {
   }, []);
 
   const onChange = (e) => {
-    const searchTerm = e.target.value;
-    document.getElementById("search-term").innerHTML = searchTerm;
+    const term = e.target.value;
+    setSearchTerm(term);
 
     console.log("filtering advocates...");
     const filteredAdvocates = advocates.filter((advocate) => {
       return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
+        advocate.firstName.includes(term) ||
+        advocate.lastName.includes(term) ||
+        advocate.city.includes(term) ||
+        advocate.degree.includes(term) ||
+        advocate.specialties.join(", ").toLowerCase().includes(term) ||
+        String(advocate.yearsOfExperience).includes(term)
       );
     });
 
@@ -38,6 +40,7 @@ export default function Home() {
 
   const onClick = () => {
     console.log(advocates);
+    setSearchTerm("");
     setFilteredAdvocates(advocates);
   };
 
@@ -48,10 +51,11 @@ export default function Home() {
       <div className={styles.search}>
         <p>Search</p>
         <p className={styles.searchingFor}>
-          Searching for: <span id="search-term"></span>
+          Searching for: <span>{searchTerm}</span>
         </p>
         <input
           className={styles.input}
+          value={searchTerm}
           onChange={onChange}
         />
         <button className={styles.button} onClick={onClick}>
@@ -73,21 +77,21 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {filteredAdvocates.map((advocate, i) => (
-                <tr key={i}>
-                  <td>{advocate.firstName}</td>
-                  <td>{advocate.lastName}</td>
-                  <td>{advocate.city}</td>
-                  <td>{advocate.degree}</td>
-                  <td className={styles.specialties}>
-                    {advocate.specialties.map((s, j) => (
-                      <div key={j}>{s}</div>
-                    ))}
-                  </td>
-                  <td>{advocate.yearsOfExperience}</td>
-                  <td>{advocate.phoneNumber}</td>
-                </tr>
-              ))}
+            {filteredAdvocates.map((advocate) => (
+              <tr key={`${advocate.firstName}-${advocate.lastName}-${advocate.phoneNumber}`}>
+                <td>{advocate.firstName}</td>
+                <td>{advocate.lastName}</td>
+                <td>{advocate.city}</td>
+                <td>{advocate.degree}</td>
+                <td className={styles.specialties}>
+                  {advocate.specialties.map((s) => (
+                  <div key={s}>{s}</div>  
+                  ))}
+                </td>
+                <td>{advocate.yearsOfExperience}</td>
+                <td>{advocate.phoneNumber}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
