@@ -4,18 +4,28 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { Advocate } from "./types/advocate";
 
+function formatPhone(n: number | string) {
+  const s = String(n);
+  // naive US formatting: 10 digits -> (XXX) XXX-XXXX
+  const m = s.match(/^(\d{3})(\d{3})(\d{4})$/);
+  return m ? `(${m[1]}) ${m[2]}-${m[3]}` : s;
+}
+
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
   const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/advocates").then((response) => {
-      response.json().then((jsonResponse) => {
+    setLoading(true);
+    fetch("/api/advocates")
+      .then((response) => response.json())
+      .then((jsonResponse) => {
         setAdvocates(jsonResponse.data);
         setFilteredAdvocates(jsonResponse.data);
-      });
-    });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const onChange = (e) => {
@@ -44,14 +54,17 @@ export default function Home() {
   return (
     <main className={styles.container}>
       <h1 className={styles.title}>Solace Advocates</h1>
-      <br />
+
       <div className={styles.search}>
-        <p>Search</p>
-        <p className={styles.searchingFor}>
-          Searching for: <span>{searchTerm}</span>
-        </p>
+        <label htmlFor="search">Search</label>
+        <span className={styles.searchingFor} aria-live="polite">
+          Searching for: <strong>{searchTerm}</strong>
+        </span>
         <input
+          id="search"
+          type="search"
           className={styles.input}
+          placeholder="Search name, city, degree, specialty…"
           value={searchTerm}
           onChange={onChange}
         />
@@ -59,6 +72,14 @@ export default function Home() {
           Reset Search
         </button>
       </div>
+
+      {loading ? (
+        <div className={styles.status}>Loading…</div>
+      ) : filteredAdvocates.length === 0 ? (
+        <div className={`${styles.status} ${styles.empty}`}>
+          No results found. Try a different search.
+        </div>
+      ) : null}
 
       <div className={styles.tableWrap}>
         <table className={styles.table}>
@@ -75,18 +96,22 @@ export default function Home() {
           </thead>
           <tbody>
             {filteredAdvocates.map((advocate) => (
-              <tr key={`${advocate.firstName}-${advocate.lastName}-${advocate.phoneNumber}`}>
+              <tr
+                key={`${advocate.firstName}-${advocate.lastName}-${advocate.phoneNumber}`}
+              >
                 <td>{advocate.firstName}</td>
                 <td>{advocate.lastName}</td>
                 <td>{advocate.city}</td>
                 <td>{advocate.degree}</td>
-                <td className={styles.specialties}>
-                  {advocate.specialties.map((s) => (
-                  <div key={s}>{s}</div>  
-                  ))}
+                <td>
+                  <ul className={styles.specialtiesList}>
+                    {advocate.specialties.map((s) => (
+                      <li key={s}>{s}</li>
+                    ))}
+                  </ul>
                 </td>
                 <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
+                <td>{formatPhone(advocate.phoneNumber)}</td>
               </tr>
             ))}
           </tbody>
