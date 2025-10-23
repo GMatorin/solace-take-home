@@ -1,0 +1,2 @@
+Great take home project! There's still a ton that can be done - finishing pagination, improving the UI etc.
+One thing I wish was included is the priorotized list of features / updates that the team would like to see project.
